@@ -1,0 +1,26 @@
+name: Build and Deploy
+on:  
+  workflow_dispatch:  
+  schedule:
+    - cron: "*/15 * * * *"
+  
+permissions:
+  contents: write
+jobs:
+  build-and-deploy:
+    concurrency: ci-${{ github.ref }} # Recommended if you intend to make multiple deployments in quick succession.
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout 🛎️
+        uses: actions/checkout@v3		
+      - name: Fetch Topmate Data 📦
+        uses: JamesIves/fetch-api-data-action@v2
+        with:
+          endpoint: https://galactus.run/fetchByUsername/?username=bipul
+          configuration: '{ "method": "GET"}'
+          save-location: dist
+          save-name: topmate
+      - name: Deploy 🚀
+        uses: JamesIves/github-pages-deploy-action@v4
+        with:
+          folder: dist
