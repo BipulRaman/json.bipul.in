@@ -27,22 +27,22 @@ jobs:
           $csv = Import-Csv -Path .\mycsv.csv
           $UpdatedData = $csv | ForEach-Object {
               [PSCustomObject]@{
-                  "Timestamp" = $_["Timestamp"]
-                  "Email" = $_["Email Address"]
-                  "Name" = $_["Name"]
-                  "Gender" = $_["Gender"]
-                  "Phone" = $_["Phone number"]
-                  "Location" = $_["Current Location (City, State) "]
-                  "FirstJnv" = $_["First JNV"]
-                  "OtherJnv" = $_["Migration JNVs Name"]
-                  "EntryYear" = $_["Entry Year in JNV"]
-                  "ExitYear" = $_["Exit Year in JNV"]
-                  "EntryClass" = $_["Entry Class in JNV"]
-                  "Profile" = $_["Current Profile"]
-                  "Org" = $_["Current Organization / Institute"]
-                  "Deg" = $_["Current Designation / Degree"]
-                  "Attending" = $_["Which event you are planning to attend at Samagam"]
-                  "Donation" = $_["Donation Amount"]
+                  "Timestamp" = $_.Timestamp
+                  "Email" = $_."Email Address"
+                  "Name" = $_."Name"
+                  "Gender" = $_."Gender"
+                  "Phone" = $_."Phone number"
+                  "Location" = $_."Current Location (City, State) "
+                  "FirstJnv" = $_."First JNV"
+                  "OtherJnv" = $_."Migration JNVs Name"
+                  "EntryYear" = $_."Entry Year in JNV"
+                  "ExitYear" = $_."Exit Year in JNV"
+                  "EntryClass" = $_."Entry Class in JNV"
+                  "Profile" = $_."Current Profile"
+                  "Org" = $_."Current Organization / Institute"
+                  "Deg" = $_."Current Designation / Degree"
+                  "Attending" = $_."Which event you are planning to attend at Samagam"
+                  "Donation" = $_."Donation Amount"
               }
           }
           $UpdatedData | ConvertTo-Json | Set-Content -Path .\mycsv.json
