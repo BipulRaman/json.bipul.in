@@ -45,7 +45,7 @@ jobs:
                   "Donation" = $_."Donation Amount"
               }
           }
-          $UpdatedData | ConvertTo-Json | Set-Content -Path .\mycsv.json
+          $UpdatedData | ConvertTo-Json -Compress | Set-Content -Path .\mycsv.json
           Remove-Item -Path .\mycsv.csv
         
       - name: Deploy 🚀
