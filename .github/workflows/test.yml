@@ -1,4 +1,4 @@
-name: Build and Deploy
+name: Fetch and Deploy
 on:  
   workflow_dispatch:  
   
@@ -14,17 +14,17 @@ jobs:
       - name: Fetch GSheetCSV 📦
         uses: JamesIves/fetch-api-data-action@v2
         with:
-          endpoint: https://docs.google.com/spreadsheets/d/e/2PACX-1vRsOKxvAtXmqonNAKffKOeJYvQ2vYzssJ3ZxMeiJdwjQjLiNQQgy5BViFsMGOnUKI-PnCJ3XmNcn1Jd/pub?output=csv
+          endpoint: ${{ secrets.API_URL }}
           configuration: '{ "method": "GET"}'
           save-location: dist
-          save-name: mycsv
+          save-name: sam25
           format: csv
 
       - name: Run inline powershell
         shell: pwsh
         run: |
           cd dist
-          $csv = Import-Csv -Path .\mycsv.csv
+          $csv = Import-Csv -Path .\sam25.csv
           $UpdatedData = $csv | ForEach-Object {
               [PSCustomObject]@{
                   "Timestamp" = $_.Timestamp
@@ -45,8 +45,8 @@ jobs:
                   "Donation" = $_."Donation Amount"
               }
           }
-          $UpdatedData | ConvertTo-Json -Compress | Set-Content -Path .\mycsv.json
-          Remove-Item -Path .\mycsv.csv
+          $UpdatedData | ConvertTo-Json -Compress | Set-Content -Path .\sam25.json
+          Remove-Item -Path .\sam25.csv
         
       - name: Deploy 🚀
         uses: JamesIves/github-pages-deploy-action@v4
