@@ -19,6 +19,12 @@ jobs:
           save-location: dist
           save-name: mycsv
           format: csv
+
+      - name: Convert CSV to JSON uaing powershell
+        run: |
+          $csv = Get-Content dist/mycsv.csv
+          $csv | ConvertFrom-Csv | ConvertTo-Json | Set-Content dist/mycsv.json
+          Remove-Item dist/mycsv.csv
       - name: Deploy 🚀
         uses: JamesIves/github-pages-deploy-action@v4
         with:
