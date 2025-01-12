@@ -22,24 +22,25 @@ jobs:
 
       - name: Convert CSV to JSON and delete CSV
         run: |
+          cd dist
           for csv_file in *.csv; do
-            if [ -f "$csv_file" ]; then
-              json_file="${csv_file%.csv}.json"
-              # Convert CSV to JSON
-              jq -Rsn '
-                [inputs | split("\n") | .[] | select(length > 0)] as $lines |
-                ($lines[0] | split(",")) as $headers |
-                [$lines[1:][] | split(",") | 
-                  reduce range(0; $headers | length) as $i
-                  ({}; . + {($headers[$i]): .[$i]})
-                ]
-              ' < "$csv_file" > "$json_file"
-              echo "Converted $csv_file to $json_file"
-              # Delete the CSV file
-              rm "$csv_file"
-              echo "Deleted $csv_file"
-            fi
-          done
+          if [ -f "$csv_file" ]; then
+            json_file="${csv_file%.csv}.json"
+            # Convert CSV to JSON
+            jq -Rsn '
+              [inputs | split("\n") | .[] | select(length > 0)] as $lines |
+              ($lines[0] | split(",")) as $headers |
+              [$lines[1:][] | split(",") |
+            reduce range(0; $headers | length) as $i
+            ({}; . + {($headers[$i]): .[$i]})
+              ]
+            ' < "$csv_file" > "$json_file"
+            echo "Converted $csv_file to $json_file"
+            # Delete the CSV file
+            rm "$csv_file"
+            echo "Deleted $csv_file"
+          fi
+            done
         
       - name: Deploy 🚀
         uses: JamesIves/github-pages-deploy-action@v4
