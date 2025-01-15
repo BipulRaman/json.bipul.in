@@ -39,9 +39,9 @@ jobs:
                   "Phone" = $_."Public phone number"
                   "Location" = $_."Current Location (City, State) "                  
                   "Practice" = $_."Current Practice"
-                  "Degree" = $_."University / College attended"
+                  "Degree" = $_."Medical Degree"
                   "Specialization" = $_."Specialization"
-                  "College" = $_."Medical College"
+                  "College" = $_."University / College attended"
                   "Org" = $_."Name of Clinic / Hospital / Institute / Organization "
                   "Deg" = $_."Designation"
               }
