@@ -1,0 +1,56 @@
+name: Med Fetch and Deploy 
+on:  
+  workflow_dispatch:  
+  schedule:
+  - cron: "*/5 * * * *"
+  
+permissions:
+  contents: write
+jobs:
+  build-and-deploy:
+    concurrency: ci-${{ github.ref }} # Recommended if you intend to make multiple deployments in quick succession.
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout 🛎️
+        uses: actions/checkout@v3		
+      - name: Fetch 📦
+        uses: JamesIves/fetch-api-data-action@v2
+        with:
+          endpoint: ${{ secrets.MED_API }}
+          configuration: '{ "method": "GET"}'
+          save-location: dist
+          save-name: medico
+          format: csv
+
+      - name: Run inline powershell
+        shell: pwsh
+        run: |
+          cd dist
+          $csv = Import-Csv -Path .\sam25.csv
+          $UpdatedData = $csv | ForEach-Object {
+              [PSCustomObject]@{
+                  "Timestamp" = $_.Timestamp
+                  "Email" = $_."Email Address"
+                  "Name" = $_."Name"
+                  "Gender" = $_."Gender"
+                  "Phone" = $_."Phone number"
+                  "Location" = $_."Current Location (City, State) "
+                  "FirstJnv" = $_."First JNV"
+                  "OtherJnv" = $_."Migration JNVs Name"
+                  "EntryYear" = $_."Entry Year in JNV"
+                  "ExitYear" = $_."Exit Year in JNV"
+                  "EntryClass" = $_."Entry Class in JNV"
+                  "Profile" = $_."Current Profile"
+                  "Org" = $_."Current Organization / Institute"
+                  "Deg" = $_."Current Designation / Degree"
+                  "Attending" = $_."Which event you are planning to attend at Samagam"
+                  "Donation" = $_."Donation Amount"
+              }
+          }
+          $UpdatedData | ConvertTo-Json -Compress | Set-Content -Path .\medico.json
+          Remove-Item -Path .\medico.csv
+        
+      - name: Deploy 🚀
+        uses: JamesIves/github-pages-deploy-action@v4
+        with:
+          folder: dist
