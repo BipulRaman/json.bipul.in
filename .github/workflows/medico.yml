@@ -30,19 +30,19 @@ jobs:
           $UpdatedData = $csv | ForEach-Object {
               [PSCustomObject]@{
                   "Timestamp" = $_.Timestamp
-                  "Email" = $_."Email Address"
+                  "Email" = $_."Email"
                   "Name" = $_."Name"
                   "Gender" = $_."Gender"
-                  "Phone" = $_."Phone number"
+                  "Phone" = $_."Public phone number"
                   "Location" = $_."Current Location (City, State) "
                   "FirstJnv" = $_."First JNV"
-                  "OtherJnv" = $_."Migration JNVs Name"
-                  "EntryYear" = $_."Entry Year in JNV"
-                  "ExitYear" = $_."Exit Year in JNV"
-                  "EntryClass" = $_."Entry Class in JNV"
-                  "Profile" = $_."Current Profile"
-                  "Org" = $_."Current Organization / Institute"
-                  "Deg" = $_."Current Designation / Degree"
+                  "EntryYear" = $_."Entry Year"
+                  "EntryClass" = $_."Entry Class"
+                  "Practice" = $_."Current Practice"
+                  "Degree" = $_."Medical Degree"
+                  "Specialization" = $_."Specialization"
+                  "Org" = $_."Name of Clinic / Hospital / Institute / Organization "
+                  "Deg" = $_."Designation"
                   "Attending" = $_."Which event you are planning to attend at Samagam"
                   "Donation" = $_."Donation Amount"
               }
