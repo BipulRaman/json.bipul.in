@@ -26,7 +26,7 @@ jobs:
         shell: pwsh
         run: |
           cd dist
-          $csv = Import-Csv -Path .\sam25.csv
+          $csv = Import-Csv -Path .\medico.csv
           $UpdatedData = $csv | ForEach-Object {
               [PSCustomObject]@{
                   "Timestamp" = $_.Timestamp
