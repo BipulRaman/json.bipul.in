@@ -35,8 +35,8 @@ jobs:
                   "Gender" = $_."Gender"
                   "FirstJnv" = $_."First JNV"
                   "EntryYear" = $_."Entry Year"
-                  "EntryClass" = [int]$_."Entry Year" - ([int]$_."Entry Class" - 6)
-                  "Batch" = $_."Batch"
+                  "EntryClass" = $_."Entry Class"
+                  "Batch" = [int]$_."Entry Year" - ([int]$_."Entry Class" - 6)
                   "Phone" = $_."Public phone number"
                   "Location" = $_."Current Location (City, State) "                  
                   "Practice" = $_."Current Practice"
