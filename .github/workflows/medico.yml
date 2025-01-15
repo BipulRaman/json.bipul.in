@@ -33,18 +33,17 @@ jobs:
                   "Email" = $_."Email"
                   "Name" = $_."Name"
                   "Gender" = $_."Gender"
-                  "Phone" = $_."Public phone number"
-                  "Location" = $_."Current Location (City, State) "
                   "FirstJnv" = $_."First JNV"
                   "EntryYear" = $_."Entry Year"
                   "EntryClass" = $_."Entry Class"
+                  "Phone" = $_."Public phone number"
+                  "Location" = $_."Current Location (City, State) "                  
                   "Practice" = $_."Current Practice"
-                  "Degree" = $_."Medical Degree"
+                  "Degree" = $_."University / College attended"
                   "Specialization" = $_."Specialization"
+                  "College" = $_."Medical College"
                   "Org" = $_."Name of Clinic / Hospital / Institute / Organization "
                   "Deg" = $_."Designation"
-                  "Attending" = $_."Which event you are planning to attend at Samagam"
-                  "Donation" = $_."Donation Amount"
               }
           }
           $UpdatedData | ConvertTo-Json -Compress | Set-Content -Path .\medico.json
