@@ -22,33 +22,42 @@ jobs:
           save-name: sam25
           format: csv
 
-      - name: Run inline powershell
-        shell: pwsh
-        run: |
-          cd dist
-          $csv = Import-Csv -Path .\sam25.csv
-          $UpdatedData = $csv | ForEach-Object {
-              [PSCustomObject]@{
-                  "Timestamp" = $_.Timestamp
-                  "Email" = $_."Email Address"
-                  "Name" = $_."Name"
-                  "Gender" = $_."Gender"
-                  "Phone" = $_."Phone number"
-                  "Location" = $_."Current Location (City, State) "
-                  "FirstJnv" = $_."First JNV"
-                  "OtherJnv" = $_."Migration JNVs Name"
-                  "EntryYear" = $_."Entry Year in JNV"
-                  "ExitYear" = $_."Exit Year in JNV"
-                  "EntryClass" = $_."Entry Class in JNV"
-                  "Profile" = $_."Current Profile"
-                  "Org" = $_."Current Organization / Institute"
-                  "Deg" = $_."Current Designation / Degree"
-                  "Attending" = $_."Which event you are planning to attend at Samagam"
-                  "Donation" = $_."Donation Amount"
-              }
-          }
-          $UpdatedData | ConvertTo-Json -Compress | Set-Content -Path .\sam25.json
-          Remove-Item -Path .\sam25.csv
+      - name: Run inline Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: '3.x'
+      - run: |
+          import pandas as pd
+
+          # Read the CSV file
+          df = pd.read_csv('dist/sam25.csv')
+
+          # Process the data
+          df = df.rename(columns={
+              'Timestamp': 'Timestamp',
+              'Email Address': 'Email',
+              'Name': 'Name',
+              'Gender': 'Gender',
+              'Phone number': 'Phone',
+              'Current Location (City, State) ': 'Location',
+              'First JNV': 'FirstJnv',
+              'Migration JNVs Name': 'OtherJnv',
+              'Entry Year in JNV': 'EntryYear',
+              'Exit Year in JNV': 'ExitYear',
+              'Entry Class in JNV': 'EntryClass',
+              'Current Profile': 'Profile',
+              'Current Organization / Institute': 'Org',
+              'Current Designation / Degree': 'Deg',
+              'Which event you are planning to attend at Samagam': 'Attending',
+              'Donation Amount': 'Donation'
+          })
+
+          # Save to JSON
+          df.to_json('dist/sam25.json', orient='records', lines=True)
+
+          # Remove the CSV file
+          import os
+          os.remove('dist/sam25.csv')
       - name: Fetch 2📦
         uses: JamesIves/fetch-api-data-action@v2
         with:
