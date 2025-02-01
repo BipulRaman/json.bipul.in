@@ -58,33 +58,41 @@ jobs:
           save-name: medico
           format: csv
 
-      - name: Run inline powershell
-        shell: pwsh
-        run: |
-          cd dist
-          $csv = Get-Content -Path .\medico.csv | ConvertFrom-Csv
-          $UpdatedData = $csv | ForEach-Object {
-          [PSCustomObject]@{
-          "Timestamp" = $_.Timestamp
-          "Email" = $_."Email"
-          "Name" = $_."Name"
-          "Gender" = $_."Gender"
-          "FirstJnv" = $_."First JNV"
-          "EntryYear" = $_."Entry Year"
-          "EntryClass" = $_."Entry Class"
-          "Batch" = [int]$_."Entry Year" - ([int]$_."Entry Class" - 6)
-          "Phone" = $_."Public phone number"
-          "Location" = $_."Current Location (City, State) "                  
-          "Practice" = $_."Current Practice"
-          "Degree" = $_."Medical Degree"
-          "Specialization" = $_."Specialization"
-          "College" = $_."University / College attended"
-          "Org" = $_."Name of Clinic / Hospital / Institute / Organization "
-          "Deg" = $_."Designation"
-          }
-          }
-          $UpdatedData | ConvertTo-Json -Compress | Set-Content -Path .\medico.json
-          Remove-Item -Path .\medico.csv
+      - name: Run inline Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: '3.x'
+      - run: |
+          import pandas as pd
+
+          # Read the CSV file
+          df = pd.read_csv('dist/medico.csv')
+
+          # Process the data
+          df['Batch'] = df['Entry Year'] - (df['Entry Class'] - 6)
+          df = df.rename(columns={
+          'Email': 'Email',
+          'Name': 'Name',
+          'Gender': 'Gender',
+          'First JNV': 'FirstJnv',
+          'Entry Year': 'EntryYear',
+          'Entry Class': 'EntryClass',
+          'Public phone number': 'Phone',
+          'Current Location (City, State) ': 'Location',
+          'Current Practice': 'Practice',
+          'Medical Degree': 'Degree',
+          'Specialization': 'Specialization',
+          'University / College attended': 'College',
+          'Name of Clinic / Hospital / Institute / Organization ': 'Org',
+          'Designation': 'Deg'
+          })
+
+          # Save to JSON
+          df.to_json('dist/medico.json', orient='records', lines=True)
+
+          # Remove the CSV file
+          import os
+          os.remove('dist/medico.csv')
       - name: Deploy 🚀
         uses: JamesIves/github-pages-deploy-action@v4
         with:
