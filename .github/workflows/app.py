@@ -24,24 +24,24 @@ df = df.rename(columns={
 df.to_json('dist/sam25.json', orient='records', lines=True)
 os.remove('dist/sam25.csv')
 
-# Process the second CSV file
-df = pd.read_csv('dist/medico.csv')
-df['Batch'] = df['Entry Year'] - (df['Entry Class'] - 6)
-df = df.rename(columns={
-    'Email': 'Email',
-    'Name': 'Name',
-    'Gender': 'Gender',
-    'First JNV': 'FirstJnv',
-    'Entry Year': 'EntryYear',
-    'Entry Class': 'EntryClass',
-    'Public phone number': 'Phone',
-    'Current Location (City, State) ': 'Location',
-    'Current Practice': 'Practice',
-    'Medical Degree': 'Degree',
-    'Specialization': 'Specialization',
-    'University / College attended': 'College',
-    'Name of Clinic / Hospital / Institute / Organization ': 'Org',
-    'Designation': 'Deg'
-})
-df.to_json('dist/medico.json', orient='records', lines=True)
-os.remove('dist/medico.csv')
+# # Process the second CSV file
+# df = pd.read_csv('dist/medico.csv')
+# df['Batch'] = df['Entry Year'] - (df['Entry Class'] - 6)
+# df = df.rename(columns={
+#     'Email': 'Email',
+#     'Name': 'Name',
+#     'Gender': 'Gender',
+#     'First JNV': 'FirstJnv',
+#     'Entry Year': 'EntryYear',
+#     'Entry Class': 'EntryClass',
+#     'Public phone number': 'Phone',
+#     'Current Location (City, State) ': 'Location',
+#     'Current Practice': 'Practice',
+#     'Medical Degree': 'Degree',
+#     'Specialization': 'Specialization',
+#     'University / College attended': 'College',
+#     'Name of Clinic / Hospital / Institute / Organization ': 'Org',
+#     'Designation': 'Deg'
+# })
+# df.to_json('dist/medico.json', orient='records', lines=True)
+# os.remove('dist/medico.csv')

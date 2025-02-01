@@ -21,14 +21,14 @@ jobs:
           save-location: dist
           save-name: sam25
           format: csv
-      - name: Fetch 2📦
-        uses: JamesIves/fetch-api-data-action@v2
-        with:
-          endpoint: ${{ secrets.MED_API }}
-          configuration: '{ "method": "GET"}'
-          save-location: dist
-          save-name: medico
-          format: csv
+      # - name: Fetch 2📦
+      #   uses: JamesIves/fetch-api-data-action@v2
+      #   with:
+      #     endpoint: ${{ secrets.MED_API }}
+      #     configuration: '{ "method": "GET"}'
+      #     save-location: dist
+      #     save-name: medico
+      #     format: csv
       - name: Run py script 🐍
         run: python3 app.py
       - name: Deploy 🚀
