@@ -62,29 +62,29 @@ jobs:
         shell: pwsh
         run: |
           cd dist
-          $csv = Import-Csv -Path .\medico.csv
+          $csv = Get-Content -Path .\medico.csv | ConvertFrom-Csv
           $UpdatedData = $csv | ForEach-Object {
-              [PSCustomObject]@{
-                  "Timestamp" = $_.Timestamp
-                  "Email" = $_."Email"
-                  "Name" = $_."Name"
-                  "Gender" = $_."Gender"
-                  "FirstJnv" = $_."First JNV"
-                  "EntryYear" = $_."Entry Year"
-                  "EntryClass" = $_."Entry Class"
-                  "Batch" = [int]$_."Entry Year" - ([int]$_."Entry Class" - 6)
-                  "Phone" = $_."Public phone number"
-                  "Location" = $_."Current Location (City, State) "                  
-                  "Practice" = $_."Current Practice"
-                  "Degree" = $_."Medical Degree"
-                  "Specialization" = $_."Specialization"
-                  "College" = $_."University / College attended"
-                  "Org" = $_."Name of Clinic / Hospital / Institute / Organization "
-                  "Deg" = $_."Designation"
-              }
+          [PSCustomObject]@{
+          "Timestamp" = $_.Timestamp
+          "Email" = $_."Email"
+          "Name" = $_."Name"
+          "Gender" = $_."Gender"
+          "FirstJnv" = $_."First JNV"
+          "EntryYear" = $_."Entry Year"
+          "EntryClass" = $_."Entry Class"
+          "Batch" = [int]$_."Entry Year" - ([int]$_."Entry Class" - 6)
+          "Phone" = $_."Public phone number"
+          "Location" = $_."Current Location (City, State) "                  
+          "Practice" = $_."Current Practice"
+          "Degree" = $_."Medical Degree"
+          "Specialization" = $_."Specialization"
+          "College" = $_."University / College attended"
+          "Org" = $_."Name of Clinic / Hospital / Institute / Organization "
+          "Deg" = $_."Designation"
+          }
           }
           $UpdatedData | ConvertTo-Json -Compress | Set-Content -Path .\medico.json
-          Remove-Item -Path .\medico.csv  
+          Remove-Item -Path .\medico.csv
       - name: Deploy 🚀
         uses: JamesIves/github-pages-deploy-action@v4
         with:
