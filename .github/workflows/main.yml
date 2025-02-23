@@ -2,7 +2,7 @@ name: Build and Deploy
 on:  
   workflow_dispatch:  
   schedule:
-    - cron: "*/15 * * * *"
+    - cron: "*/3 * * * *"
   
 permissions:
   contents: write
@@ -16,11 +16,7 @@ jobs:
       - name: Fetch Topmate Data 📦
         uses: JamesIves/fetch-api-data-action@v2
         with:
-          endpoint: https://galactus.run/fetchByUsername/?username=bipul
+          endpoint: https://alumniapp.azurewebsites.net/attendee/sync
           configuration: '{ "method": "GET"}'
           save-location: dist
-          save-name: topmate
-      - name: Deploy 🚀
-        uses: JamesIves/github-pages-deploy-action@v4
-        with:
-          folder: dist
+          save-name: sync
